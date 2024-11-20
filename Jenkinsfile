@@ -1,20 +1,20 @@
 pipeline {
-    agent any
-
-    stages {
-        stage('Initial cleanup') {
-            steps {
-                dir("${WORKSPACE}") {
-                    deleteDir()
-                }
-            }
+  agent any
+  stages {
+    stage('Initial cleanup') {
+      steps {
+        dir(path: "${WORKSPACE}") {
+          deleteDir()
         }
 
-        stage('Checkout SCM') {
-            steps {
-                git branch: 'main', url: 'https://github.com/StegTechHub/php-todo.git'
-            }
-        }
+      }
+    }
+
+    stage('Checkout SCM') {
+      steps {
+        git(branch: 'main', url: 'https://github.com/StegTechHub/php-todo.git')
+      }
+    }
 
         stage('Prepare Dependencies') {
             steps {
@@ -27,4 +27,3 @@ pipeline {
         }
     }
 }
-ls -la
