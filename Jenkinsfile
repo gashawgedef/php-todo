@@ -17,21 +17,14 @@ pipeline {
         }
 
         stage('Prepare Dependencies') {
-    steps {
-        script {
-            // Check if .env.sample exists before renaming
-            if (fileExists('.env.sample')) {
+            steps {
                 sh 'mv .env.sample .env'
-            } else {
-                echo ".env.sample file does not exist."
+                sh 'composer install'
+                sh 'php artisan migrate'
+                sh 'php artisan db:seed'
+                sh 'php artisan key:generate'
             }
-            sh 'composer install'
-            sh 'php artisan migrate'
-            sh 'php artisan db:seed'
-            sh 'php artisan key:generate'
         }
-    }
-}
     }
 }
 ls -la
