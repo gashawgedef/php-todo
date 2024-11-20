@@ -12,7 +12,7 @@ pipeline {
 
     stage('Checkout SCM') {
       steps {
-        git(branch: 'main', url: 'https://github.com/StegTechHub/php-todo.git')
+        git(branch: 'main', url: 'https://github.com/gashawgedef/php-todo.git')
       }
     }
 
