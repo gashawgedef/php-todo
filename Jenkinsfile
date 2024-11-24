@@ -17,7 +17,7 @@ pipeline {
         stage('Checkout SCM') {
             steps {
                git branch: 'main', credentialsId: 'gashity_token', url: 'https://github.com/gashawgedef/php-todo.git'
-// Checkout the source code
+
             }
         }
 
