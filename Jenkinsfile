@@ -1,6 +1,3 @@
-0717922589
-
-
 pipeline {
   agent any
   stages {
