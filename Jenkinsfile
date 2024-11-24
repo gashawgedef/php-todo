@@ -40,13 +40,21 @@ pipeline {
             }
         }
 
-        stage('Fix Permissions') {
+         stage('Setup Laravel Directories') {
             steps {
-                // Ensure phpunit has execute permissions
-                sh 'chmod +x ./vendor/bin/phpunit'
-                
-                // Ensure necessary directories have correct permissions for Laravel
-                sh 'chmod -R 775 storage bootstrap/cache'
+                dir("${WORKSPACE}") {
+                    // Ensure Laravel storage directories exist
+                    sh 'mkdir -p storage/framework/sessions'
+                    sh 'mkdir -p storage/framework/cache'
+                    sh 'chmod -R 777 storage' // Adjust permissions as needed for your environment
+                }
+            }
+        }
+
+        stage('Download PHPUnit') {
+            steps {
+                sh 'wget -O phpunit https://phar.phpunit.de/phpunit-${PHPUNIT_VERSION}.phar'
+                sh 'chmod +x phpunit'
             }
         }
 
