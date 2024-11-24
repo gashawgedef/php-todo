@@ -28,8 +28,10 @@ pipeline {
 
     stage('Execute Unit Tests') {
       steps {
-        sh 'php ./vendor/bin/phpunit'
-      }
+            //  sh './vendor/bin/phpunit'
+          sh 'chmod +x ./vendor/bin/phpunit' // Make the script executable
+          sh './vendor/bin/phpunit'
+      } 
     }
 
   }
