@@ -55,5 +55,11 @@ pipeline {
                 sh './phpunit --configuration phpunit.xml'
             }
         }
+       stage('Code Analysis') {
+          steps {
+                sh 'phploc app/ --log-csv build/logs/phploc.csv'
+
+          }
+    }
     }
 }
