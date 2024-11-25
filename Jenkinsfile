@@ -61,6 +61,7 @@ pipeline {
                 sh 'chmod +x phploc.phar'
             }
         }
+        
         stage('Code Analysis') {
             steps {
                 // Execute PHPLOC for code analysis
