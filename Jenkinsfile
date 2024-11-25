@@ -90,7 +90,7 @@ pipeline {
 
       }
     }
-    
+
     stage ('Package Artifact') {
     steps {
             sh 'zip -qr php-todo.zip ${WORKSPACE}/*'
@@ -99,7 +99,7 @@ pipeline {
 
     
 
-        stage ('Upload Artifact to Artifactory') {
+ stage ('Upload Artifact to Artifactory') {
           steps {
             script { 
                  def server = Artifactory.server 'artifactory-server'                 
@@ -118,6 +118,12 @@ pipeline {
                }
             }
   
+        }
+     stage ('Deploy to Dev Environment') {
+            agent { label 'slave_one' }
+            steps {
+                build job: 'ansible-config-mgt/main', parameters: [[$class: 'StringParameterValue', name: 'env', value: 'dev']], propagate: false, wait: true
+            }
         }
 
 
