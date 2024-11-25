@@ -91,11 +91,12 @@ pipeline {
       }
     }
 
-    stage ('Package Artifact') {
-    steps {
-            sh 'zip -qr php-todo.zip ${WORKSPACE}/*'
-     }
-    }
+     stage('Package Artifact') {
+            steps {
+                sh 'zip -qr php-todo.zip ${WORKSPACE}/*'
+                archiveArtifacts artifacts: 'php-todo.zip', allowEmptyArchive: false
+            }
+        }
 
     
 
@@ -107,7 +108,7 @@ pipeline {
                     "files": [
                       {
                        "pattern": "php-todo.zip",
-                        "target": "todo-dev-local/php-todo",
+                        "target": "todo-dev-local/php-todo${env.BUILD_NUMBER}/",
                        "props": "type=zip;status=ready"
 
                        }
