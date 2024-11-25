@@ -62,10 +62,11 @@ pipeline {
             }
         }
        stage('Code Analysis') {
-          steps {
-                sh 'phploc app/ --log-csv build/logs/phploc.csv'
-
-          }
-    }
+            steps {
+                // Ensure logs directory exists before running PHPLOC
+                sh 'mkdir -p build/logs'
+                sh './phploc app/ --log-csv build/logs/phploc.csv'  // Run PHPLOC
+            }
+        }
     }
 }
