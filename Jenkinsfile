@@ -61,11 +61,13 @@ pipeline {
                 sh 'chmod +x phploc.phar'
             }
         }
-       stage('Code Analysis') {
+        stage('Code Analysis') {
             steps {
-                // Ensure logs directory exists before running PHPLOC
-                sh 'mkdir -p build/logs'
-                sh './phploc app/ --log-csv build/logs/phploc.csv'  // Run PHPLOC
+                // Execute PHPLOC for code analysis
+                sh './phploc.phar app/ --log-csv build/logs/phploc.csv'
+
+                // Archive PHPLOC CSV file as a build artifact
+                archiveArtifacts artifacts: 'build/logs/phploc.csv', allowEmptyArchive: true
             }
         }
     }
