@@ -55,6 +55,12 @@ pipeline {
                 sh './phpunit --configuration phpunit.xml'
             }
         }
+        stage('Download PHPLOC') {
+            steps {
+                sh 'wget -O phploc.phar https://phar.phpunit.de/phploc.phar'
+                sh 'chmod +x phploc.phar'
+            }
+        }
        stage('Code Analysis') {
           steps {
                 sh 'phploc app/ --log-csv build/logs/phploc.csv'
