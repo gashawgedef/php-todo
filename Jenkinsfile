@@ -20,7 +20,7 @@ pipeline {
 
             }
         }
-        
+
 
         stage('Prepare Dependencies') {
             steps {
@@ -37,7 +37,9 @@ pipeline {
                 dir("${WORKSPACE}") {
                     // Ensure Laravel storage directories exist
                     sh 'mkdir -p storage/framework/sessions'
+                    
                     sh 'mkdir -p storage/framework/cache'
+
                     sh 'chmod -R 777 storage'  // Set permissions for storage directory
                 }
             }
