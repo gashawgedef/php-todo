@@ -5,8 +5,9 @@ pipeline {
         PHPUNIT_VERSION = '9.5'  // Define the PHPUnit version if it's not already defined elsewhere
     }
      tools {
-        sonarQubeScanner 'SonarQubeScanner' // Use the tool name from Global Tool Configuration
-    }
+    hudson.plugins.sonar.SonarRunnerInstallation 'SonarQubeScanner' // Correct
+}
+
 
     stages {
         stage('Initial cleanup') {
