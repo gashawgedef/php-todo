@@ -100,18 +100,19 @@ pipeline {
                 archiveArtifacts artifacts: 'php-todo.zip', allowEmptyArchive: false
             }
         }
-
-     stage('SonarQube Quality Gate') {
+         stage('SonarQube Quality Gate') {
         environment {
             scannerHome = tool 'SonarQubeScanner'
         }
         steps {
-        
-      withSonarQubeEnv('SonarQubeScanner') {
-    sh "${scannerHome}/bin/sonar-scanner"
-}
+            withSonarQubeEnv('sonarqube') {
+                sh "${scannerHome}/bin/sonar-scanner"
+            }
+
         }
     }
+
+     
 
  stage ('Upload Artifact to Artifactory') {
           steps {
