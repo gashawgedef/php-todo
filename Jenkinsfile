@@ -100,6 +100,23 @@ pipeline {
                 archiveArtifacts artifacts: 'php-todo.zip', allowEmptyArchive: false
             }
         }
+    stage('Install SonarQube Scanner') {
+    steps {
+        tool 'SonarQubeScanner' // This triggers Jenkins to install the scanner
+    }
+}
+
+     stage('SonarQube Quality Gate') {
+        environment {
+            scannerHome = tool 'SonarQubeScanner'
+        }
+        steps {
+            withSonarQubeEnv('sonarqube') {
+                sh "${scannerHome}/bin/sonar-scanner"
+            }
+
+        }
+    }
 
     
 
