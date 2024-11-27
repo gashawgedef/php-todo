@@ -4,10 +4,9 @@ pipeline {
     environment {
         PHPUNIT_VERSION = '9.5'  // Define the PHPUnit version if it's not already defined elsewhere
     }
-     tools {
+    tools {
     hudson.plugins.sonar.SonarRunnerInstallation 'SonarQubeScanner' // Correct
 }
-
 
     stages {
         stage('Initial cleanup') {
@@ -104,13 +103,8 @@ pipeline {
                 archiveArtifacts artifacts: 'php-todo.zip', allowEmptyArchive: false
             }
         }
-    stage('SonarQube Analysis') {
-            steps {
-                withSonarQubeEnv('sonarqube') { // Use the server name from Configure System
-                    sh "${scannerHome}/bin/sonar-scanner"
-                }
-            }
-        }
+    
+
      stage('SonarQube Quality Gate') {
         environment {
             scannerHome = tool 'SonarQubeScanner'
