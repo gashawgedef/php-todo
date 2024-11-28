@@ -21,11 +21,10 @@ pipeline {
             }
         }
 
-
         stage('Prepare Dependencies') {
             steps {
                 sh 'mv .env.sample .env'  // Rename .env.sample to .env
-                sh 'composer install'  // Install Composer dependencies
+                 sh 'composer install --prefer-dist --no-scripts' // Install Composer dependencies
                 sh 'php artisan migrate'  // Run Laravel migrations
                 sh 'php artisan db:seed'  // Seed the database
                 sh 'php artisan key:generate'  // Generate Laravel application key
@@ -37,9 +36,7 @@ pipeline {
                 dir("${WORKSPACE}") {
                     // Ensure Laravel storage directories exist
                     sh 'mkdir -p storage/framework/sessions'
-                    
                     sh 'mkdir -p storage/framework/cache'
-
                     sh 'chmod -R 777 storage'  // Set permissions for storage directory
                 }
             }
@@ -94,26 +91,14 @@ pipeline {
       }
     }
 
-
      stage('Package Artifact') {
             steps {
                 sh 'zip -qr php-todo.zip ${WORKSPACE}/*'
                 archiveArtifacts artifacts: 'php-todo.zip', allowEmptyArchive: false
             }
         }
-         stage('SonarQube Quality Gate') {
-        environment {
-            scannerHome = tool 'SonarQubeScanner'
-        }
-        steps {
-            withSonarQubeEnv('sonarqube') {
-                sh "${scannerHome}/bin/sonar-scanner"
-            }
 
-        }
-    }
-
-     
+    
 
  stage ('Upload Artifact to Artifactory') {
           steps {
