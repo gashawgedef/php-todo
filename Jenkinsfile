@@ -20,11 +20,34 @@ pipeline {
 
             }
         }
+         stage('Install PHP 7.3 and Composer') {
+            steps {
+                script {
+                    // Install PHP 7.3
+                    sh '''
+                        sudo add-apt-repository ppa:ondrej/php
+                        sudo apt-get update
+                        sudo apt-get install -y php7.3 php7.3-cli php7.3-mbstring php7.3-xml php7.3-curl
+                    '''
+
+                    // Install Composer if it's not already installed
+                    def composerInstalled = sh(script: 'composer -v', returnStatus: true) == 0
+                    if (!composerInstalled) {
+                        echo 'Composer is not installed. Installing Composer...'
+                        sh '''
+                            curl -sS https://getcomposer.org/installer | php
+                            sudo mv composer.phar /usr/local/bin/composer
+                        '''
+                    }
+                }
+            }
+        }
+
 
         stage('Prepare Dependencies') {
             steps {
                 sh 'mv .env.sample .env'  // Rename .env.sample to .env
-                 sh 'composer install --prefer-dist --no-scripts' // Install Composer dependencies
+                sh 'composer install'  // Install Composer dependencies
                 sh 'php artisan migrate'  // Run Laravel migrations
                 sh 'php artisan db:seed'  // Seed the database
                 sh 'php artisan key:generate'  // Generate Laravel application key
