@@ -2,7 +2,7 @@ pipeline {
     agent any
     
     environment {
-        PHPUNIT_VERSION = '7.5.20'  // Define the PHPUnit version if it's not already defined elsewhere
+        PHPUNIT_VERSION = '9.5'  // Define the PHPUnit version if it's not already defined elsewhere
     }
 
     stages {
