@@ -48,6 +48,14 @@ pipeline {
                 sh 'chmod +x phpunit'  // Make the PHPUnit file executable
             }
         }
+            stage('Install Code Coverage') {
+            steps {
+                script {
+                    // Installing php-code-coverage as a dev dependency via composer
+                    sh 'composer require --dev phpunit/php-code-coverage'
+                }
+            }
+        }
 
         stage('Run Unit Tests') {
             steps {
