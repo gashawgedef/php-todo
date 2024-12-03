@@ -48,7 +48,13 @@ pipeline {
                 sh 'chmod +x phpunit'  // Make the PHPUnit file executable
             }
         }
-           
+        
+        stage('Migrate PHPUnit Configuration') {
+            steps {
+                // Run the PHPUnit migrate configuration command
+                sh './phpunit --migrate-configuration'  // Migrate PHPUnit configuration
+            }
+        }
         stage('Run Unit Tests') {
             steps {
                 // Run PHPUnit tests using the downloaded PHPUnit version
