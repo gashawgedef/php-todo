@@ -52,7 +52,8 @@ pipeline {
         stage('Run Unit Tests') {
             steps {
                 // Run PHPUnit tests using the downloaded PHPUnit version
-                sh './phpunit --configuration phpunit.xml'
+                 sh './phpunit --configuration phpunit.xml --verbose'
+                //sh './phpunit --configuration phpunit.xml'
             }
         }
         stage('Download PHPLOC') {
