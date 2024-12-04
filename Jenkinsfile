@@ -1,9 +1,8 @@
 pipeline {
     agent any
-
+    
     environment {
-        PHPUNIT_VERSION = '7.5.20' 
-          JAVA_HOME = '/usr/lib/jvm/java-17-openjdk' // Define the PHPUnit version if it's not already defined elsewhere
+        PHPUNIT_VERSION = '7.5.20'  // Define the PHPUnit version if it's not already defined elsewhere
     }
 
     stages {
@@ -101,20 +100,21 @@ pipeline {
             }
         }
 
-       stage('SonarQube Quality Gate') {
-            when { branch pattern: "^develop*|^hotfix*|^release*|^main*", comparator: "REGEXP" }
-            environment {
-                scannerHome = tool 'SonarQubeScanner'
+      stage('SonarQube Quality Gate') {
+      when { branch pattern: "^develop*|^hotfix*|^release*|^main*", comparator: "REGEXP"}
+        environment {
+            scannerHome = tool 'SonarQubeScanner'
+        }
+        steps {
+            withSonarQubeEnv('sonarqube') {
+                sh "${scannerHome}/bin/sonar-scanner -Dproject.settings=sonar-project.properties"
             }
-            steps {
-                withSonarQubeEnv('sonarqube') {
-                    sh "${scannerHome}/bin/sonar-scanner -Dproject.settings=sonar-project.properties"
-                }
-                timeout(time: 1, unit: 'MINUTES') {
-                    waitForQualityGate abortPipeline: true
-                }
+            timeout(time: 1, unit: 'MINUTES') {
+                waitForQualityGate abortPipeline: true
             }
         }
+    }
+
  stage ('Upload Artifact to Artifactory') {
           steps {
             script { 
